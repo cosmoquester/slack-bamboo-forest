@@ -27,23 +27,6 @@ commands:
             - "env"
 
 jobs:
-  run-test:
-    executor: python-executor
-    steps:
-      - install-packages
-
-      - run:
-          name: Run Tests
-          command: |
-            source env/bin/activate
-            pytest --cov-branch --cov sample_package
-
-      - run:
-          name: Upload coverage report
-          command: |
-            source env/bin/activate
-            codecov
-
   check-linting:
     executor: python-executor
     steps:
@@ -53,11 +36,10 @@ jobs:
           name: Run black, isort
           command: |
             source env/bin/activate
-            black --check sample_package tests
-            isort sample_package tests
+            black --check app.py
+            isort app.py
 
 workflows:
   main:
     jobs:
-      - run-test
       - check-linting
